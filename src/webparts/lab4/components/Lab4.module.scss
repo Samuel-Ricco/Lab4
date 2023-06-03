@@ -1,4 +1,4 @@
-@import '~@fluentui/react/dist/sass/References.scss';
+@import "~@fluentui/react/dist/sass/References.scss";
 
 .lab4 {
   overflow: hidden;
@@ -23,12 +23,27 @@
   a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+    color: var(
+      --link
+    ); // note: CSS Custom Properties support is limited to modern browsers only
 
     &:hover {
       text-decoration: underline;
       color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+      color: var(
+        --linkHovered
+      ); // note: CSS Custom Properties support is limited to modern browsers only
     }
   }
+}
+
+.redButton {
+  background-color: red;
+  border-color: red;
+  color: white;
+}
+.redButton:hover {
+  background-color: crimson;
+  border-color: red;
+  color: white;
 }

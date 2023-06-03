@@ -6,6 +6,7 @@ import {
   TextField,
   Modal,
 } from "@fluentui/react";
+import styles from "./Lab4.module.scss";
 
 const title: string = "Modifica Libro";
 
@@ -141,7 +142,7 @@ export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
             }}
           >
             {/* Bottone "Elimina" */}
-            <PrimaryButton text="Elimina" color={ColorClassNames.red} />
+            <PrimaryButton text="Elimina" className={styles.redButton} />
             {/* Bottone "Salva" */}
             <PrimaryButton
               text="Salva"

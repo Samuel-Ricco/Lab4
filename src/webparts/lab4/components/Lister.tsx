@@ -40,12 +40,22 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     };
   }
 
-  public handleSaveBook = (updatedBook: Book) => {
-    // Aggiorna il libro modificato nella lista dei libri
-    const updatedBooks = this.state.books.map((book) =>
-      book === this.state.selectedBook ? updatedBook : book
-    );
-    this.setState({ books: updatedBooks, showModal: false });
+  public handleSaveBook = async (updatedBook: Book) => {
+    try {
+      const { books, selectedBook } = this.state;
+
+      // Effettua la chiamata a SharePoint per aggiornare il libro
+      await SPHelper.updateBook(updatedBook);
+
+      // Aggiorna lo stato con il libro modificato
+      const updatedBooks = books.map((book) =>
+        book.id === selectedBook.id ? updatedBook : book
+      );
+
+      this.setState({ books: updatedBooks, showModal: false });
+    } catch (error) {
+      console.error("Errore durante il salvataggio del libro:", error);
+    }
   };
 
   public handleActiveItemChanged = (item?: Book) => {

@@ -36,6 +36,11 @@ export default class Lab4WebPart extends BaseClientSideWebPart<ILab4WebPartProps
   protected async onInit(): Promise<void> {
     await super.onInit();
     SPHelper.Init(this.context);
+
+    //TODO elimina
+    console.log(SPHelper.getAll());
+
+    /////
     return this._getEnvironmentMessage().then((message) => {
       this._environmentMessage = message;
     });
