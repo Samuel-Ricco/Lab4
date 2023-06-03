@@ -8,8 +8,6 @@ import {
 } from "@fluentui/react";
 import styles from "./Lab4.module.scss";
 
-const title: string = "Modifica Libro";
-
 interface IMyModalState {
   bookTitle: string;
   bookAuthor: string;
@@ -22,6 +20,7 @@ interface IMyModalProps {
   selectedBook: Book;
   onSave: (updatedBook: Book) => void;
   onClose: () => void;
+  onDelete: (selectedBook: Book) => void;
 }
 
 export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
@@ -84,6 +83,11 @@ export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
     this.props.onSave(updatedBook);
   };
 
+  public deleteBook = () => {
+    const { selectedBook } = this.props;
+    this.props.onDelete(selectedBook);
+  };
+
   public render(): React.ReactElement<IMyModalProps> {
     return (
       <Modal
@@ -103,9 +107,7 @@ export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
             margin: "0 auto",
           }}
         >
-          <h2 className="Title">
-            <title>{title}</title>
-          </h2>
+          <h2 className="Title">Modifica il libro</h2>
           <div className="TextFields">
             {/* Campo di testo per il titolo */}
             <TextField
@@ -142,7 +144,11 @@ export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
             }}
           >
             {/* Bottone "Elimina" */}
-            <PrimaryButton text="Elimina" className={styles.redButton} />
+            <PrimaryButton
+              text="Elimina"
+              className={styles.redButton}
+              onClick={this.deleteBook}
+            />
             {/* Bottone "Salva" */}
             <PrimaryButton
               text="Salva"

@@ -63,4 +63,15 @@ export class SPHelper {
       console.error(e);
     }
   };
+
+  public static deleteBook = async (book: Book) => {
+    try {
+      const item = SPHelper._sp.web.lists
+        .getByTitle(Mappings.spListNameBooks)
+        .items.getById(book.id);
+      item.delete();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 }

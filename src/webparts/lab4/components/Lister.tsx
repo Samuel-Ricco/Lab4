@@ -58,6 +58,20 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
+  public handelDeleteBook = async (deletedBook: Book) => {
+    try {
+      const { books } = this.state;
+      await SPHelper.deleteBook(deletedBook);
+
+      const updatedBooks = books.filter(
+        (element) => element.id !== deletedBook.id
+      );
+      this.setState({ books: updatedBooks, showModal: false });
+    } catch (error) {
+      console.error("Errore durante l'eliminazione del libro:", error);
+    }
+  };
+
   public handleActiveItemChanged = (item?: Book) => {
     // Gestisce il cambio dell'elemento selezionato nella DetailsList
     this.setState({ selectedBook: item });
@@ -115,6 +129,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
             selectedBook={selectedBook}
             onSave={this.handleSaveBook}
             onClose={this.handleCloseModal}
+            onDelete={this.handelDeleteBook}
           />
         )}
       </div>
