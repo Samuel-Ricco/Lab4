@@ -3,6 +3,7 @@ import { SPFI, spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/lists/types";
 import { Book, IBook } from "../models/Book";
 
 import { Mappings } from "./Mappings";
@@ -61,6 +62,24 @@ export class SPHelper {
       });
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  public static addBook = async (book: Book) => {
+    try {
+      const list = SPHelper._sp.web.lists.getByTitle(Mappings.spListNameBooks);
+
+      const newItem = await list.items.add({
+        [Mappings.title]: book.title,
+        [Mappings.authorNameCode]: book.authorName,
+        [Mappings.publishYearCode]: book.publishYear,
+        [Mappings.pages]: book.pages,
+      });
+
+      return newItem.data;
+    } catch (error) {
+      console.error("Errore durante l'aggiunta del libro:", error);
+      throw error;
     }
   };
 

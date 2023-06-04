@@ -14,14 +14,12 @@ export class Book implements IBook {
   pages: number;
 
   constructor(
-    _id: number,
     _title: string,
     _authorName: string,
     _publishYear: number,
     _pages: number
   ) {
-    (this.id = _id),
-      (this.title = _title),
+    (this.title = _title),
       (this.authorName = _authorName),
       (this.publishYear = _publishYear),
       (this.pages = _pages);
