@@ -4,12 +4,12 @@ import {
   DetailsList,
   IColumn,
   SelectionMode,
+  Selection,
 } from "@fluentui/react/lib/DetailsList";
 import { Book } from "../models/Book";
 import { EditModal } from "./EditModal";
 import { PrimaryButton } from "@fluentui/react";
 import { AddModal } from "./AddModal";
-//import { Selection } from "@fluentui/react/lib/DetailsList";
 
 interface IListerProps {}
 
@@ -21,6 +21,9 @@ interface IListerState {
 }
 
 export class Lister extends React.Component<IListerProps, IListerState> {
+  // Definizione della selection per poter controllare la deselezione
+  private selection: Selection;
+
   // Definizione delle colonne per DetailsList
   private columns: IColumn[] = [
     { key: "column1", name: "Title", fieldName: "title", minWidth: 100 },
@@ -42,8 +45,26 @@ export class Lister extends React.Component<IListerProps, IListerState> {
       showEditModal: false,
       showAddModal: false,
     };
+
+    // Inizializzazione della selection e specifica della callBack
+    this.selection = new Selection({
+      onSelectionChanged: this.handleSelectionChanged,
+    });
   }
 
+  // Metodo chiamato quando la selezione cambia nella DetailsList
+  public handleSelectionChanged = () => {
+    const selectedItems = this.selection.getSelection() as Book[];
+    if (selectedItems.length > 0) {
+      // Se è stato selezionato almeno un elemento, imposta il primo elemento come selectedBook
+      this.setState({ selectedBook: selectedItems[0] });
+    } else {
+      // Altrimenti, imposta selectedBook a null
+      this.setState({ selectedBook: null });
+    }
+  };
+
+  // Metodo chiamato quando si salva un libro modificato
   public handleSaveBook = async (updatedBook: Book) => {
     try {
       const { books, selectedBook } = this.state;
@@ -53,7 +74,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
 
       // Aggiorna lo stato con il libro modificato
       const updatedBooks = books.map((book) =>
-        book.id === selectedBook.id ? updatedBook : book
+        book.id === selectedBook!.id ? updatedBook : book
       );
 
       this.setState({ books: updatedBooks, showEditModal: false });
@@ -62,6 +83,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
+  // Metodo chiamato quando si elimina un libro
   public handelDeleteBook = async (deletedBook: Book) => {
     try {
       const { books } = this.state;
@@ -76,15 +98,19 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
-  public handleAddBook = () => {
-    //TODO
+  // Metodo chiamato quando si aggiunge un nuovo libro
+  public handleAddBook = async (newBook: Book) => {
+    // try {
+    //   const { books } = this.state;
+    //   await SPHelper.addBook(newBook);
+    //   const updatedBooks = [...books, newBook];
+    //   this.setState({ books: updatedBooks, showAddModal: false });
+    // } catch (error) {
+    //   console.error("Errore durante l'aggiunta del libro:", error);
+    // }
   };
 
-  public handleActiveItemChanged = (item?: Book) => {
-    // Gestisce il cambio dell'elemento selezionato nella DetailsList
-    this.setState({ selectedBook: item });
-  };
-
+  // Metodo chiamato quando si apre la modale di modifica
   public handleOpenEditModal = () => {
     // Apre la modale solo se è stato selezionato un libro
     if (this.state.selectedBook) {
@@ -92,15 +118,18 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
+  // Metodo chiamato quando si apre la modale di aggiunta
   public handleOpenAddModal = () => {
     this.setState({ showAddModal: true });
   };
 
+  // Metodo chiamato quando si chiude la modale di modifica
   public handleCloseEditModal = () => {
     // Chiude la modale
     this.setState({ showEditModal: false });
   };
 
+  // Metodo chiamato quando si chiude la modale di aggiunta
   public handleCloseAddModal = () => {
     // Chiude la modale
     this.setState({ showAddModal: false });
@@ -117,12 +146,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
   }
 
   render() {
-    const {
-      books,
-      selectedBook,
-      showEditModal: showEditModal,
-      showAddModal: showAddModal,
-    } = this.state;
+    const { books, selectedBook, showEditModal, showAddModal } = this.state;
 
     return (
       <div>
@@ -132,7 +156,8 @@ export class Lister extends React.Component<IListerProps, IListerState> {
             items={books}
             columns={this.columns}
             selectionMode={SelectionMode.single}
-            onActiveItemChanged={this.handleActiveItemChanged}
+            selection={this.selection}
+            onActiveItemChanged={this.handleSelectionChanged}
           />
           <div
             style={{
@@ -141,14 +166,13 @@ export class Lister extends React.Component<IListerProps, IListerState> {
               alignItems: "center",
             }}
           >
-            {/* Bottone "Modifica" */}
-
+            {/* Bottone "Aggiungi" */}
             <PrimaryButton
               text="Aggiungi"
               onClick={this.handleOpenAddModal}
               style={{ marginTop: "10px" }}
             />
-
+            {/* Bottone "Modifica" */}
             <PrimaryButton
               text="Modifica"
               onClick={this.handleOpenEditModal}
@@ -167,7 +191,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
             onDelete={this.handelDeleteBook}
           />
         )}
-
+        {/* Modale per l'aggiunta di un nuovo libro */}
         {showAddModal && (
           <AddModal
             isVisible={showAddModal}
