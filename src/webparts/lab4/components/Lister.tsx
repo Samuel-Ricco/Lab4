@@ -101,20 +101,11 @@ export class Lister extends React.Component<IListerProps, IListerState> {
   // Metodo chiamato quando si aggiunge un nuovo libro
   public handleAddBook = async (newBook: Book) => {
     try {
-      const { books } = this.state;
-
-      // Effettua la validazione dei campi numerici
-      if (isNaN(newBook.pages) || isNaN(newBook.publishYear)) {
-        // Visualizza un messaggio di errore o gestisci la situazione in base alle tue esigenze
-        console.error("I valori dei campi numerici non sono validi.");
-        return;
-      }
-
-      // Procedi con l'aggiunta del libro solo se i valori numerici sono validi
       await SPHelper.addBook(newBook);
-      books.push(newBook);
 
-      const updatedBooks = books;
+      // Recupera nuovamente la lista dei libri dal server dopo l'aggiunta
+      const updatedBooks = await SPHelper.getAll();
+
       this.setState({ books: updatedBooks, showAddModal: false });
     } catch (error) {
       console.log(error);

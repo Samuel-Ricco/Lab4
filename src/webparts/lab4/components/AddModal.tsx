@@ -14,6 +14,7 @@ interface IAddModalState {
   bookAuthor: string;
   bookYear: string;
   bookPages: string;
+  errorMessage: string | null;
 }
 
 export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
@@ -25,6 +26,7 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
       bookAuthor: Mappings.authorName,
       bookYear: Mappings.publishYear,
       bookPages: Mappings.pages,
+      errorMessage: null,
     };
   }
 
@@ -61,20 +63,34 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
   };
 
   public createBook = () => {
+    const { bookTitle, bookAuthor, bookYear, bookPages } = this.state;
+
+    // Effettua la validazione dei campi numerici
+    if (isNaN(parseInt(bookYear)) || isNaN(parseInt(bookPages))) {
+      this.setState({
+        errorMessage: "I valori dei campi numerici non sono validi.",
+      });
+      return;
+    }
+
     const newBook: Book = new Book(
-      this.state.bookTitle,
-      this.state.bookAuthor,
-      parseInt(this.state.bookYear),
-      parseInt(this.state.bookPages)
+      bookTitle,
+      bookAuthor,
+      parseInt(bookYear),
+      parseInt(bookPages)
     );
     this.props.onSave(newBook);
   };
 
   public render(): React.ReactElement<IAddModalProps> {
+    const { isVisible, onClose } = this.props;
+    const { bookTitle, bookAuthor, bookYear, bookPages, errorMessage } =
+      this.state;
+
     return (
       <Modal
-        isOpen={this.props.isVisible}
-        onDismiss={this.props.onClose}
+        isOpen={isVisible}
+        onDismiss={onClose}
         isBlocking={false}
         containerClassName="modal-container"
       >
@@ -94,29 +110,38 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
             {/* Campo di testo per il titolo */}
             <TextField
               label="Titolo"
-              value={this.state.bookTitle}
+              value={bookTitle}
               onChange={this.handleTitleChange}
             />
             {/* Campo di testo per l'autore */}
             <TextField
               label="Autore"
-              value={this.state.bookAuthor}
+              value={bookAuthor}
               onChange={this.handleAuthorChange}
             />
             {/* Campo di testo per l'anno di pubblicazione */}
             <TextField
               label="Anno di pubblicazione"
-              value={this.state.bookYear}
+              value={bookYear}
               onChange={this.handleYearChange}
             />
             {/* Campo di testo per il numero di pagine */}
             <TextField
-              label="Pagine"
-              value={this.state.bookPages}
+              label="Numero di pagine"
+              value={bookPages}
               onChange={this.handlePagesChange}
             />
           </div>
-
+          {/* Visualizza il messaggio di errore se presente */}
+          {errorMessage && (
+            <div className="ErrorMessage">
+              <span
+                style={{ fontWeight: "bold", color: "red", fontSize: "16px" }}
+              >
+                {errorMessage}
+              </span>
+            </div>
+          )}
           <div
             className="Buttons"
             style={{
@@ -125,10 +150,10 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
               justifyContent: "space-between",
             }}
           >
-            {/* Bottone "Elimina" */}
-            <PrimaryButton text="Chiudi" onClick={this.props.onClose} />
-            {/* Bottone "Salva" */}
+            {/* Bottone di salvataggio */}
             <PrimaryButton text="Salva" onClick={this.createBook} />
+            {/* Bottone di chiusura */}
+            <PrimaryButton text="Chiudi" onClick={onClose} />
           </div>
         </div>
       </Modal>
