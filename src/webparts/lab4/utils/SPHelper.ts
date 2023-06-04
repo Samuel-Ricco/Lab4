@@ -35,8 +35,8 @@ export class SPHelper {
         return {
           id: i[Mappings.id],
           title: i[Mappings.title],
-          authorName: i[Mappings.authorName],
-          publishYear: i[Mappings.publishYear],
+          authorName: i[Mappings.authorNameCode],
+          publishYear: i[Mappings.publishYearCode],
           pages: i[Mappings.pages],
         };
       });
@@ -55,8 +55,8 @@ export class SPHelper {
       // Aggiorna i campi dell'elemento con i valori del libro modificato
       await item.update({
         [Mappings.title]: book.title,
-        [Mappings.authorName]: book.authorName,
-        [Mappings.publishYear]: book.publishYear,
+        [Mappings.authorNameCode]: book.authorName,
+        [Mappings.publishYearCode]: book.publishYear,
         [Mappings.pages]: book.pages,
       });
     } catch (e) {

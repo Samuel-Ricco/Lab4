@@ -8,14 +8,7 @@ import {
 } from "@fluentui/react";
 import styles from "./Lab4.module.scss";
 
-interface IMyModalState {
-  bookTitle: string;
-  bookAuthor: string;
-  bookYear: string;
-  bookPages: string;
-}
-
-interface IMyModalProps {
+interface IEditModalProps {
   isVisible: boolean;
   selectedBook: Book;
   onSave: (updatedBook: Book) => void;
@@ -23,8 +16,18 @@ interface IMyModalProps {
   onDelete: (selectedBook: Book) => void;
 }
 
-export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
-  constructor(props: IMyModalProps) {
+interface IEditModalState {
+  bookTitle: string;
+  bookAuthor: string;
+  bookYear: string;
+  bookPages: string;
+}
+
+export class EditModal extends React.Component<
+  IEditModalProps,
+  IEditModalState
+> {
+  constructor(props: IEditModalProps) {
     super(props);
 
     this.state = {
@@ -88,7 +91,7 @@ export class MyModal extends React.Component<IMyModalProps, IMyModalState> {
     this.props.onDelete(selectedBook);
   };
 
-  public render(): React.ReactElement<IMyModalProps> {
+  public render(): React.ReactElement<IEditModalProps> {
     return (
       <Modal
         isOpen={this.props.isVisible}
