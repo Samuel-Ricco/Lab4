@@ -7,17 +7,18 @@ import {
   Selection,
 } from "@fluentui/react/lib/DetailsList";
 import { Book } from "../models/Book";
-import { EditModal } from "./EditModal";
+// import { EditModal } from "./EditModal";
 import { PrimaryButton } from "@fluentui/react";
-import { AddModal } from "./AddModal";
+// import { AddModal } from "./AddModal";
+import { Modals } from "./Modals";
 
 interface IListerProps {}
 
 interface IListerState {
   books: Book[];
   selectedBook: Book | null;
-  showEditModal: boolean;
-  showAddModal: boolean;
+  showModal: boolean;
+  isEditMode: boolean;
 }
 
 export class Lister extends React.Component<IListerProps, IListerState> {
@@ -42,8 +43,8 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     this.state = {
       books: [],
       selectedBook: null,
-      showEditModal: false,
-      showAddModal: false,
+      showModal: false,
+      isEditMode: false,
     };
 
     // Inizializzazione della selection e specifica della callBack
@@ -75,7 +76,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
         book.id === selectedBook!.id ? updatedBook : book
       );
 
-      this.setState({ books: updatedBooks, showEditModal: false });
+      this.setState({ books: updatedBooks, showModal: false });
     } catch (error) {
       console.error("Errore durante il salvataggio del libro:", error);
     }
@@ -89,7 +90,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
       const updatedBooks = books.filter(
         (element) => element.id !== deletedBook.id
       );
-      this.setState({ books: updatedBooks, showEditModal: false });
+      this.setState({ books: updatedBooks, showModal: false });
     } catch (error) {
       console.error("Errore durante l'eliminazione del libro:", error);
     }
@@ -102,28 +103,26 @@ export class Lister extends React.Component<IListerProps, IListerState> {
       // Recupera nuovamente la lista dei libri dal server dopo l'aggiunta
       const updatedBooks = await SPHelper.getAll();
 
-      this.setState({ books: updatedBooks, showAddModal: false });
+      this.setState({ books: updatedBooks, showModal: false });
     } catch (error) {
       console.log(error);
     }
   };
 
-  public handleOpenEditModal = () => {
+  private handleOpenEditModal = () => {
     if (this.state.selectedBook) {
-      this.setState({ showEditModal: true });
+      this.setState({ isEditMode: true });
+      this.setState({ showModal: true });
     }
   };
 
-  public handleOpenAddModal = () => {
-    this.setState({ showAddModal: true });
+  private handleOpenAddModal = () => {
+    this.setState({ isEditMode: false });
+    this.setState({ showModal: true });
   };
 
-  public handleCloseEditModal = () => {
-    this.setState({ showEditModal: false });
-  };
-
-  public handleCloseAddModal = () => {
-    this.setState({ showAddModal: false });
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
   };
 
   async componentDidMount() {
@@ -137,7 +136,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
   }
 
   render() {
-    const { books, selectedBook, showEditModal, showAddModal } = this.state;
+    const { books, selectedBook, showModal, isEditMode } = this.state;
 
     return (
       <div>
@@ -172,22 +171,16 @@ export class Lister extends React.Component<IListerProps, IListerState> {
             />
           </div>
         </div>
-        {/* Modale per la modifica del libro */}
-        {selectedBook && showEditModal && (
-          <EditModal
-            isVisible={showEditModal}
+
+        {showModal && (
+          <Modals
+            isVisible={showModal}
             selectedBook={selectedBook}
-            onSave={this.handleSaveBook}
-            onClose={this.handleCloseEditModal}
+            isEditMode={isEditMode}
+            onSaveAdd={this.handleAddBook}
+            onSaveEdit={this.handleSaveBook}
             onDelete={this.handelDeleteBook}
-          />
-        )}
-        {/* Modale per l'aggiunta di un nuovo libro */}
-        {showAddModal && (
-          <AddModal
-            isVisible={showAddModal}
-            onSave={this.handleAddBook}
-            onClose={this.handleCloseAddModal}
+            onClose={this.handleCloseModal}
           />
         )}
       </div>

@@ -12,7 +12,8 @@ interface IModalsProps {
   isVisible: boolean;
   selectedBook: Book;
   isEditMode: boolean;
-  onSave: (updatedBook: Book) => void;
+  onSaveAdd: (updatedBook: Book) => void;
+  onSaveEdit: (updatedBook: Book) => void;
   onClose: () => void;
   onDelete: (selectedBook: Book) => void;
 }
@@ -29,13 +30,23 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
   constructor(props: IModalsProps) {
     super(props);
 
-    this.state = {
-      bookTitle: props.selectedBook.title,
-      bookAuthor: props.selectedBook.authorName,
-      bookYear: props.selectedBook.publishYear.toString(),
-      bookPages: props.selectedBook.pages.toString(),
-      errorMessage: null,
-    };
+    if (props.selectedBook != null) {
+      this.state = {
+        bookTitle: props.selectedBook.title,
+        bookAuthor: props.selectedBook.authorName,
+        bookYear: props.selectedBook.publishYear.toString(),
+        bookPages: props.selectedBook.pages.toString(),
+        errorMessage: null,
+      };
+    } else if (props.selectedBook == null) {
+      this.state = {
+        bookTitle: "",
+        bookAuthor: "",
+        bookYear: "",
+        bookPages: "",
+        errorMessage: null,
+      };
+    }
   }
 
   // Metodi condivisi----------------
@@ -88,7 +99,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
       pages: parseInt(bookPages),
     };
 
-    this.props.onSave(updatedBook);
+    this.props.onSaveEdit(updatedBook);
   };
 
   public deleteBook = () => {
@@ -114,7 +125,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
       parseInt(bookYear),
       parseInt(bookPages)
     );
-    this.props.onSave(newBook);
+    this.props.onSaveAdd(newBook);
   };
 
   //Render------------------------
