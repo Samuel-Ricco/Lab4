@@ -11,6 +11,7 @@ import { Book } from "../models/Book";
 import { PrimaryButton } from "@fluentui/react";
 // import { AddModal } from "./AddModal";
 import { Modals } from "./Modals";
+import styles from "./Lab4.module.scss";
 
 interface IListerProps {}
 
@@ -149,13 +150,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
             selection={this.selection}
             onActiveItemChanged={this.handleSelectionChanged}
           />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-            }}
-          >
+          <div className={styles["lister-content"]}>
             {/* Bottone "Aggiungi" */}
             <PrimaryButton
               text="Aggiungi"

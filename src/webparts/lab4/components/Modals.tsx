@@ -138,19 +138,8 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
         isOpen={this.props.isVisible}
         onDismiss={this.props.onClose}
         isBlocking={false}
-        containerClassName="modal-container"
       >
-        <div
-          className="modal-content"
-          style={{
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            padding: "20px",
-            width: "400px",
-            margin: "0 auto",
-          }}
-        >
+        <div className={styles["modal-content"]}>
           {this.props.isEditMode ? (
             <h2 className="Title">Modifica il libro</h2>
           ) : (
@@ -194,14 +183,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
             </div>
           )}
 
-          <div
-            className="Buttons"
-            style={{
-              marginTop: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
+          <div className={styles["buttons-content"]}>
             {this.props.isEditMode ? (
               <>
                 {/* Bottone "Elimina" */}
