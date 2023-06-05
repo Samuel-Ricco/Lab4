@@ -130,87 +130,13 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
 
   //Render------------------------
   public render(): React.ReactElement<IModalsProps> {
-    const { isVisible, onClose } = this.props;
-    const { bookTitle, bookAuthor, bookYear, bookPages, errorMessage } =
-      this.state;
-    if (this.props.isEditMode) {
-      //return dell'edit
-      return (
-        <Modal
-          isOpen={this.props.isVisible}
-          onDismiss={this.props.onClose}
-          isBlocking={false}
-          containerClassName="modal-container"
-        >
-          <div
-            className="modal-content"
-            style={{
-              backgroundColor: "#f5f5f5",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              padding: "20px",
-              width: "400px",
-              margin: "0 auto",
-            }}
-          >
-            <h2 className="Title">Modifica il libro</h2>
-            <div className="TextFields">
-              {/* Campo di testo per il titolo */}
-              <TextField
-                label="Titolo"
-                value={this.state.bookTitle}
-                onChange={this.handleTitleChange}
-              />
-              {/* Campo di testo per l'autore */}
-              <TextField
-                label="Autore"
-                value={this.state.bookAuthor}
-                onChange={this.handleAuthorChange}
-              />
-              {/* Campo di testo per l'anno di pubblicazione */}
-              <TextField
-                label="Anno di pubblicazione"
-                value={this.state.bookYear}
-                onChange={this.handleYearChange}
-              />
-              {/* Campo di testo per il numero di pagine */}
-              <TextField
-                label="Pagine"
-                value={this.state.bookPages}
-                onChange={this.handlePagesChange}
-              />
-            </div>
-
-            <div
-              className="Buttons"
-              style={{
-                marginTop: "20px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* Bottone "Elimina" */}
-              <PrimaryButton
-                text="Elimina"
-                className={styles.redButton}
-                onClick={this.deleteBook}
-              />
-              {/* Bottone "Salva" */}
-              <PrimaryButton
-                text="Salva"
-                color={ColorClassNames.green}
-                onClick={this.updateBook}
-              />
-            </div>
-          </div>
-        </Modal>
-      );
-    }
-    //return dell'add
+    const { onClose } = this.props;
+    const { errorMessage } = this.state;
+    //return dell'edit
     return (
       <Modal
-        isOpen={isVisible}
-        onDismiss={onClose}
+        isOpen={this.props.isVisible}
+        onDismiss={this.props.onClose}
         isBlocking={false}
         containerClassName="modal-container"
       >
@@ -225,30 +151,35 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
             margin: "0 auto",
           }}
         >
-          <h2 className="Title">Aggiungi un Libro</h2>
+          {this.props.isEditMode ? (
+            <h2 className="Title">Modifica il libro</h2>
+          ) : (
+            <h2 className="Title">Aggiungi un libro</h2>
+          )}
+
           <div className="TextFields">
             {/* Campo di testo per il titolo */}
             <TextField
               label="Titolo"
-              value={bookTitle}
+              value={this.state.bookTitle}
               onChange={this.handleTitleChange}
             />
             {/* Campo di testo per l'autore */}
             <TextField
               label="Autore"
-              value={bookAuthor}
+              value={this.state.bookAuthor}
               onChange={this.handleAuthorChange}
             />
             {/* Campo di testo per l'anno di pubblicazione */}
             <TextField
               label="Anno di pubblicazione"
-              value={bookYear}
+              value={this.state.bookYear}
               onChange={this.handleYearChange}
             />
             {/* Campo di testo per il numero di pagine */}
             <TextField
-              label="Numero di pagine"
-              value={bookPages}
+              label="Pagine"
+              value={this.state.bookPages}
               onChange={this.handlePagesChange}
             />
           </div>
@@ -262,6 +193,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
               </span>
             </div>
           )}
+
           <div
             className="Buttons"
             style={{
@@ -270,10 +202,29 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
               justifyContent: "space-between",
             }}
           >
-            {/* Bottone di salvataggio */}
-            <PrimaryButton text="Salva" onClick={this.createBook} />
-            {/* Bottone di chiusura */}
-            <PrimaryButton text="Chiudi" onClick={onClose} />
+            {this.props.isEditMode ? (
+              <>
+                {/* Bottone "Elimina" */}
+                <PrimaryButton
+                  text="Elimina"
+                  className={styles.redButton}
+                  onClick={this.deleteBook}
+                />
+                {/* Bottone "Salva" */}
+                <PrimaryButton
+                  text="Salva"
+                  color={ColorClassNames.green}
+                  onClick={this.updateBook}
+                />
+              </>
+            ) : (
+              <>
+                {/* Bottone di salvataggio */}
+                <PrimaryButton text="Salva" onClick={this.createBook} />
+                {/* Bottone di chiusura */}
+                <PrimaryButton text="Chiudi" onClick={onClose} />
+              </>
+            )}
           </div>
         </div>
       </Modal>
