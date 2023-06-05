@@ -52,7 +52,6 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     });
   }
 
-  // Metodo chiamato quando la selezione cambia nella DetailsList
   public handleSelectionChanged = () => {
     const selectedItems = this.selection.getSelection() as Book[];
     if (selectedItems.length > 0) {
@@ -64,7 +63,6 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
-  // Metodo chiamato quando si salva un libro modificato
   public handleSaveBook = async (updatedBook: Book) => {
     try {
       const { books, selectedBook } = this.state;
@@ -83,7 +81,6 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
-  // Metodo chiamato quando si elimina un libro
   public handelDeleteBook = async (deletedBook: Book) => {
     try {
       const { books } = this.state;
@@ -98,7 +95,6 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
-  // Metodo chiamato quando si aggiunge un nuovo libro
   public handleAddBook = async (newBook: Book) => {
     try {
       await SPHelper.addBook(newBook);
@@ -112,28 +108,21 @@ export class Lister extends React.Component<IListerProps, IListerState> {
     }
   };
 
-  // Metodo chiamato quando si apre la modale di modifica
   public handleOpenEditModal = () => {
-    // Apre la modale solo se è stato selezionato un libro
     if (this.state.selectedBook) {
       this.setState({ showEditModal: true });
     }
   };
 
-  // Metodo chiamato quando si apre la modale di aggiunta
   public handleOpenAddModal = () => {
     this.setState({ showAddModal: true });
   };
 
-  // Metodo chiamato quando si chiude la modale di modifica
   public handleCloseEditModal = () => {
-    // Chiude la modale
     this.setState({ showEditModal: false });
   };
 
-  // Metodo chiamato quando si chiude la modale di aggiunta
   public handleCloseAddModal = () => {
-    // Chiude la modale
     this.setState({ showAddModal: false });
   };
 

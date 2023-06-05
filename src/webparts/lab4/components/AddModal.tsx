@@ -34,7 +34,6 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string
   ) => {
-    // Gestisce il cambiamento del titolo del libro
     this.setState({ bookTitle: newValue || "" });
   };
 
@@ -42,7 +41,6 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string
   ) => {
-    // Gestisce il cambiamento dell'autore del libro
     this.setState({ bookAuthor: newValue || "" });
   };
 
@@ -50,7 +48,6 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string
   ) => {
-    // Gestisce il cambiamento dell'anno di pubblicazione del libro
     this.setState({ bookYear: newValue || "" });
   };
 
@@ -58,7 +55,6 @@ export class AddModal extends React.Component<IAddModalProps, IAddModalState> {
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string
   ) => {
-    // Gestisce il cambiamento del numero di pagine del libro
     this.setState({ bookPages: newValue || "" });
   };
 
