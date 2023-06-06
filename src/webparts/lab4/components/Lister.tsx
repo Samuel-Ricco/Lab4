@@ -7,10 +7,8 @@ import {
   Selection,
 } from "@fluentui/react/lib/DetailsList";
 import { Book } from "../models/Book";
-// import { EditModal } from "./EditModal";
 import { PrimaryButton } from "@fluentui/react";
-// import { AddModal } from "./AddModal";
-import { Modals } from "./Modals";
+import { CustomModal } from "./Modal";
 import styles from "./Lab4.module.scss";
 
 interface IListerProps {}
@@ -168,7 +166,7 @@ export class Lister extends React.Component<IListerProps, IListerState> {
         </div>
 
         {showModal && (
-          <Modals
+          <CustomModal
             isVisible={showModal}
             selectedBook={selectedBook}
             isEditMode={isEditMode}

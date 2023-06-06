@@ -8,7 +8,7 @@ import {
 } from "@fluentui/react";
 import styles from "./Lab4.module.scss";
 
-interface IModalsProps {
+interface ICustomModalProps {
   isVisible: boolean;
   selectedBook: Book;
   isEditMode: boolean;
@@ -18,7 +18,7 @@ interface IModalsProps {
   onDelete: (selectedBook: Book) => void;
 }
 
-interface IModalsState {
+interface ICustomModalState {
   bookTitle: string;
   bookAuthor: string;
   bookYear: string;
@@ -26,8 +26,11 @@ interface IModalsState {
   errorMessage: string | null;
 }
 
-export class Modals extends React.Component<IModalsProps, IModalsState> {
-  constructor(props: IModalsProps) {
+export class CustomModal extends React.Component<
+  ICustomModalProps,
+  ICustomModalState
+> {
+  constructor(props: ICustomModalProps) {
     super(props);
 
     if (props.selectedBook != null) {
@@ -50,6 +53,8 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
   }
 
   // Metodi condivisi----------------
+
+  //TODO racchiudere in un unico metodo se possibile
   public handleTitleChange = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string
@@ -78,7 +83,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
     this.setState({ bookPages: newValue || "" });
   };
 
-  //Metodi edit-------------------
+  //Metodi dell'edit-----------------
   public updateBook = () => {
     // Aggiorna il libro con i nuovi valori inseriti
     const { selectedBook } = this.props;
@@ -129,7 +134,7 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
   };
 
   //Render------------------------
-  public render(): React.ReactElement<IModalsProps> {
+  public render(): React.ReactElement<ICustomModalProps> {
     const { onClose } = this.props;
     const { errorMessage } = this.state;
     //return dell'edit
@@ -186,13 +191,13 @@ export class Modals extends React.Component<IModalsProps, IModalsState> {
           <div className={styles["buttons-content"]}>
             {this.props.isEditMode ? (
               <>
-                {/* Bottone "Elimina" */}
+                {/* Bottone di eliminazione */}
                 <PrimaryButton
                   text="Elimina"
                   className={styles.redButton}
                   onClick={this.deleteBook}
                 />
-                {/* Bottone "Salva" */}
+                {/* Bottone di salvataggio */}
                 <PrimaryButton
                   text="Salva"
                   color={ColorClassNames.green}
